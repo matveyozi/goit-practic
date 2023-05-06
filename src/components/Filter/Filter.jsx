@@ -1,7 +1,8 @@
 import React from 'react'
-
-export const Filter = () => {
+import TextField from '@mui/material/TextField';
+ const Filter = ({handleChange, value}) => {
   return (
-	<div>Filter</div>
+    <TextField onChange={handleChange} value={value} id="standard-basic" label="Standard" variant="standard" />
   )
 }
+export default Filter;
