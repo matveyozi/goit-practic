@@ -2,7 +2,7 @@ import React from 'react'
 import Checkbox from '@mui/material/Checkbox';
 
 
-export default function WordList({ words }) {
+export default function WordList({ words, deleteWord }) {
 	return <ul>
 		{words.map((item, index) => {
 			return <li key={item.id}>
@@ -17,7 +17,7 @@ export default function WordList({ words }) {
 				<p className="enWord">
 					{item.enWord}
 				</p>
-				<button >DELETE</button>
+				<button onClick={() => deleteWord(item.id)}>DELETE</button>
 				<button >EDIT</button>
 			</li>
 		})}
