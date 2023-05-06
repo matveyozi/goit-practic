@@ -9,7 +9,7 @@ export default class WordsForm extends Component {
 	}
 
 	handleChange = (e) => {
-		// console.log(e)
+		console.log(e)
 		this.setState({
 			[e.target.name]:e.target.value
 		})
