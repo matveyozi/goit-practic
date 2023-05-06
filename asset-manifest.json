@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/goit-practic/static/css/main.7acaea2f.css",
+    "main.js": "/goit-practic/static/js/main.8e6f6162.js",
+    "index.html": "/goit-practic/index.html",
+    "main.7acaea2f.css.map": "/goit-practic/static/css/main.7acaea2f.css.map",
+    "main.8e6f6162.js.map": "/goit-practic/static/js/main.8e6f6162.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7acaea2f.css",
+    "static/js/main.8e6f6162.js"
+  ]
+}
