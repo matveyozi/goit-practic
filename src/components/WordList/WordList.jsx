@@ -3,7 +3,12 @@ import React from 'react';
 
 import WordListItem from './WordListItem';
 
-export default function WordList({ words, deleteWord, editWord }) {
+export default function WordList({
+  words,
+  deleteWord,
+  editWord,
+  editWordCheckbox,
+}) {
   return (
     <ul>
       {words.map((item, index) => {
@@ -14,6 +19,7 @@ export default function WordList({ words, deleteWord, editWord }) {
             item={item}
             deleteWord={deleteWord}
             editWord={editWord}
+            editWordCheckbox={editWordCheckbox}
           />
         );
       })}

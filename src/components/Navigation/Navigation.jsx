@@ -6,6 +6,17 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { NavLink } from 'react-router-dom';
+import styled from '@emotion/styled';
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: white;
+
+  &.active {
+    color: red;
+  }
+`;
 
 export default function Navigation() {
   return (
@@ -22,7 +33,10 @@ export default function Navigation() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            <StyledNavLink to="/">Home</StyledNavLink>
+          </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <StyledNavLink to="quiz">Quiz</StyledNavLink>
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>

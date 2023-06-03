@@ -5,7 +5,13 @@ import Checkbox from '@mui/material/Checkbox';
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 
-const WordListItem = ({ index, item, deleteWord, editWord }) => {
+const WordListItem = ({
+  index,
+  item,
+  deleteWord,
+  editWord,
+  editWordCheckbox,
+}) => {
   const [isEdit, setIsEdit] = useState(false);
   const [uaWord, setUaWord] = useState(item.uaWord);
   const [enWord, setEnWord] = useState(item.enWord);
@@ -31,25 +37,28 @@ const WordListItem = ({ index, item, deleteWord, editWord }) => {
   };
 
   return (
-    <div>
-      <li>
-        <Checkbox />
-        <p className="numberWord">{index + 1}</p>
-        {isEdit ? (
-          <TextField value={uaWord} name="uaWord" onChange={handleChange} />
-        ) : (
-          <p className="ukrWord">{item.uaWord} </p>
-        )}
-        {isEdit ? (
-          <TextField value={enWord} name="enWord" onChange={handleChange} />
-        ) : (
-          <p className="enWord">{item.enWord}</p>
-        )}
+    <li>
+      <Checkbox
+        checked={item.isChecked}
+        onClick={() => {
+          editWordCheckbox(item.id);
+        }}
+      />
+      <p className="numberWord">{index + 1}</p>
+      {isEdit ? (
+        <TextField value={uaWord} name="uaWord" onChange={handleChange} />
+      ) : (
+        <p className="ukrWord">{item.uaWord} </p>
+      )}
+      {isEdit ? (
+        <TextField value={enWord} name="enWord" onChange={handleChange} />
+      ) : (
+        <p className="enWord">{item.enWord}</p>
+      )}
 
-        <button onClick={() => deleteWord(item.id)}>DELETE</button>
-        <button onClick={handleEdit}>{isEdit ? 'SAVE' : 'EDIT'}</button>
-      </li>
-    </div>
+      <button onClick={() => deleteWord(item.id)}>DELETE</button>
+      <button onClick={handleEdit}>{isEdit ? 'SAVE' : 'EDIT'}</button>
+    </li>
   );
 };
 
