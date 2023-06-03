@@ -1,25 +1,22 @@
-import React from 'react'
-import Checkbox from '@mui/material/Checkbox';
+import React from 'react';
+// import Checkbox from '@mui/material/Checkbox';
 
+import WordListItem from './WordListItem';
 
-export default function WordList({ words, deleteWord }) {
-	return <ul>
-		{words.map((item, index) => {
-			return <li key={item.id}>
-
-				<Checkbox />
-				<p className="numberWord">
-					{index + 1}
-				</p>
-				<p className="ukrWord">
-					{item.uaWord}
-				</p>
-				<p className="enWord">
-					{item.enWord}
-				</p>
-				<button onClick={() => deleteWord(item.id)}>DELETE</button>
-				<button >EDIT</button>
-			</li>
-		})}
-	</ul>
+export default function WordList({ words, deleteWord, editWord }) {
+  return (
+    <ul>
+      {words.map((item, index) => {
+        return (
+          <WordListItem
+            key={item.id}
+            index={index}
+            item={item}
+            deleteWord={deleteWord}
+            editWord={editWord}
+          />
+        );
+      })}
+    </ul>
+  );
 }

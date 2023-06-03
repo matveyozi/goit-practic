@@ -1,56 +1,72 @@
-import React, { Component } from 'react'
+// import React, { Component } from 'react'
+
+import { useState } from 'react';
+
+// компоненти
 import Navigation from './Navigation/Navigation';
 import WordList from './WordList/WordList';
 import WordsForm from './WordsForm/WordsForm';
 import Filter from './Filter/Filter';
 
-export class App extends Component {
-  state = {
-    words: [
-      { id: 1, uaWord: 'привіт', enWord: 'hello', isChecked: false },
-      { id: 2, uaWord: 'пока', enWord: 'byby', isChecked: false }
-    ],
-    filter: ''
+import { useLocalStorage } from 'hooks/useLocalStorage';
+
+const App = () => {
+  const [words, setWords] = useLocalStorage('words', []);
+  // const [filter, setFilter] = useLocalStorage('filter', '');
+  const [filter, setFilter] = useState('');
+
+  const filterWord = e => {
+    setFilter(e.target.value);
   };
 
-  filterWord = (e) => {
-    this.setState( {
-      filter: e.target.value,
-    })
-  }
+  // фільтр слів
+  const handleFilterWords = () => {
+    return words.filter(
+      word =>
+        word.uaWord.toLowerCase().includes(filter.toLowerCase().trim()) ||
+        word.enWord.toLowerCase().includes(filter.toLowerCase().trim())
+    );
+  };
 
-  handleFilterWords = () => {
-    return this.state.words.filter(word => word.uaWord.toLowerCase()
-    .includes(this.state.filter.toLowerCase().trim()) || word.enWord.toLowerCase()
-    .includes(this.state.filter.toLowerCase().trim()));
-  }
+  // додавання слова
+  const addWord = word => {
+    setWords(prevState => [...prevState, word]);
+  };
 
-  addWord = (word) => {
-    this.setState(prevState => {
-      return {
-        words:[...prevState.words, word]
-      }
-    })
-  }
+  // видалення слова
+  const deleteWord = id => {
+    setWords(prevState => {
+      return prevState.filter(word => word.id !== id);
+    });
+  };
 
-  deleteWord = (id) => {
-    this.setState(prevState => {
-      return {
-        words: prevState.words.filter(word => word.id !== id)
-      }
-    })
-  }
+  // редагування слова
+  const editWord = updatedWord => {
+    setWords(prevState => {
+      return prevState.map(word => {
+        if (word.id === updatedWord.id) {
+          return updatedWord;
+        }
+        return word;
+      });
+    });
+  };
 
-  render() {
-    const filteredWords = this.handleFilterWords()
-    return (
-      <div>
-        <Navigation />
-        <WordsForm addWord={this.addWord} />
-        <Filter handleChange={this.filterWord} value={this.state.filter}/>
-        <WordList deleteWord={this.deleteWord} words={filteredWords} />
+  // відфільтровані слова для layout
+  const filteredWords = handleFilterWords();
 
-      </div>
-    )
-  }
-}
+  return (
+    <div>
+      <Navigation />
+      <WordsForm addWord={addWord} />
+      <Filter handleChange={filterWord} value={filter} />
+      <WordList
+        deleteWord={deleteWord}
+        words={filteredWords}
+        editWord={editWord}
+      />
+    </div>
+  );
+};
+
+export default App;
