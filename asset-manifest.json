@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/goit-practic/static/css/main.7acaea2f.css",
-    "main.js": "/goit-practic/static/js/main.5af81ee9.js",
+    "main.css": "/goit-practic/static/css/main.d6d734b0.css",
+    "main.js": "/goit-practic/static/js/main.d700f76d.js",
     "index.html": "/goit-practic/index.html",
-    "main.7acaea2f.css.map": "/goit-practic/static/css/main.7acaea2f.css.map",
-    "main.5af81ee9.js.map": "/goit-practic/static/js/main.5af81ee9.js.map"
+    "main.d6d734b0.css.map": "/goit-practic/static/css/main.d6d734b0.css.map",
+    "main.d700f76d.js.map": "/goit-practic/static/js/main.d700f76d.js.map"
   },
   "entrypoints": [
-    "static/css/main.7acaea2f.css",
-    "static/js/main.5af81ee9.js"
+    "static/css/main.d6d734b0.css",
+    "static/js/main.d700f76d.js"
   ]
 }
