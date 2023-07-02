@@ -1,28 +1,26 @@
-import React from 'react';
-// import Checkbox from '@mui/material/Checkbox';
+import List from '@mui/material/List';
 
-import WordListItem from './WordListItem';
+import { WordListItem } from './WordListItem';
+import { useSelector } from 'react-redux';
+import { selectFilteredWords } from 'redux/selectors';
 
-export default function WordList({
-  words,
-  deleteWord,
-  editWord,
-  editWordCheckbox,
-}) {
+const WordList = () => {
+  const words = useSelector(selectFilteredWords);
+  // console.log(words);
   return (
-    <ul>
-      {words.map((item, index) => {
-        return (
-          <WordListItem
-            key={item.id}
-            index={index}
-            item={item}
-            deleteWord={deleteWord}
-            editWord={editWord}
-            editWordCheckbox={editWordCheckbox}
-          />
-        );
+    <List
+      sx={{
+        marginTop: '22px',
+        width: '100%',
+        maxWidth: 500,
+        bgcolor: 'background.paper',
+      }}
+    >
+      {words.map(word => {
+        return <WordListItem key={word.id} word={word} />;
       })}
-    </ul>
+    </List>
   );
-}
+};
+
+export default WordList;

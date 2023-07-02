@@ -1,65 +1,116 @@
-import React from 'react';
-
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
 
+import Icon from '@mdi/react';
+import { mdiFileEdit, mdiDelete } from '@mdi/js';
 import { useState } from 'react';
 import { TextField } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { deleteWord } from 'redux/operations';
+import { editWord } from 'redux/operations';
+import { checkWord } from 'redux/operations';
 
-const WordListItem = ({
-  index,
-  item,
-  deleteWord,
-  editWord,
-  editWordCheckbox,
-}) => {
+export const WordListItem = ({ word }) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [uaWord, setUaWord] = useState(item.uaWord);
-  const [enWord, setEnWord] = useState(item.enWord);
+  const [ukrWord, setUkrWord] = useState(word.ukrWord);
+  const [enWord, setEnWord] = useState(word.enWord);
+
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     switch (e.target.name) {
-      case 'uaWord':
-        setUaWord(e.target.value);
-        return;
+      case 'ukrWord':
+        return setUkrWord(e.target.value);
       case 'enWord':
-        setEnWord(e.target.value);
-        return;
+        return setEnWord(e.target.value);
       default:
         return;
     }
   };
 
-  const handleEdit = e => {
-    setIsEdit(prevState => !prevState);
+  const labelId = `checkbox-list-label-${word.id}`;
+
+  const handleToggle = () => {
+    dispatch(checkWord({ isChecked: !word.isChecked, id: word.id }));
+
+    // checkWord(word.id);
+  };
+
+  const handleEdit = () => {
+    setIsEdit(prevStat => !prevStat);
     if (isEdit) {
-      editWord({ ...item, uaWord, enWord });
+      dispatch(editWord({ ukrWord, enWord, id: word.id }));
+      // editeWord({ ...word, ukrWord, enWord });
     }
   };
 
   return (
-    <li>
-      <Checkbox
-        checked={item.isChecked}
-        onClick={() => {
-          editWordCheckbox(item.id);
-        }}
-      />
-      <p className="numberWord">{index + 1}</p>
-      {isEdit ? (
-        <TextField value={uaWord} name="uaWord" onChange={handleChange} />
-      ) : (
-        <p className="ukrWord">{item.uaWord} </p>
-      )}
-      {isEdit ? (
-        <TextField value={enWord} name="enWord" onChange={handleChange} />
-      ) : (
-        <p className="enWord">{item.enWord}</p>
-      )}
-
-      <button onClick={() => deleteWord(item.id)}>DELETE</button>
-      <button onClick={handleEdit}>{isEdit ? 'SAVE' : 'EDIT'}</button>
-    </li>
+    <ListItem
+      key={word.id}
+      secondaryAction={
+        <>
+          <IconButton
+            edge="end"
+            aria-label="edit"
+            onClick={handleEdit}
+            style={{ marginRight: '10px' }}
+          >
+            <Icon
+              path={mdiFileEdit}
+              title="User Profile"
+              size={1}
+              color="rgba(0, 0, 0, 0.54)"
+            />
+          </IconButton>
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={() => dispatch(deleteWord(word.id))}
+          >
+            <Icon
+              path={mdiDelete}
+              title="User Profile"
+              size={1}
+              color="rgba(0, 0, 0, 0.54)"
+            />
+          </IconButton>
+        </>
+      }
+      disablePadding
+    >
+      <ListItemButton role={undefined} onClick={handleToggle} dense>
+        <ListItemIcon>
+          <Checkbox
+            edge="start"
+            checked={word.isChecked}
+            tabIndex={-1}
+            disableRipple
+            inputProps={{ 'aria-labelledby': labelId }}
+          />
+        </ListItemIcon>
+        {isEdit ? (
+          <TextField name="ukrWord" onChange={handleChange} value={ukrWord} />
+        ) : (
+          <ListItemText
+            id={labelId}
+            primary={`${ukrWord}`}
+            sx={{ flexBasis: '0' }}
+          />
+        )}
+        {isEdit ? (
+          <TextField name="enWord" onChange={handleChange} value={enWord} />
+        ) : (
+          <ListItemText
+            id={labelId}
+            primary={`${enWord}`}
+            sx={{ flexBasis: '0' }}
+          />
+        )}
+      </ListItemButton>
+    </ListItem>
   );
 };
-
-export default WordListItem;

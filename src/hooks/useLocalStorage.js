@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+// ПИСАТИ HOOKS ЯКІ НЕ ПЕРЕВИКОРИСТОВУЮТЬСЯ НЕДОЦІЛЬНО - ЦЕ ТРАТА ЧАСУ !!!
 
 export const useLocalStorage = (key, initialState) => {
-  const [state, setState] = useState(() => {
-    return JSON.parse(localStorage.getItem(key)) ?? initialState;
-  });
+  const [state, setState] = useState(
+    () => JSON.parse(localStorage.getItem(key)) ?? initialState
+  );
 
-  const callback = () => {
-    localStorage.setItem(key, JSON.stringify(state));
-  };
-
-  useEffect(callback, [key, state]);
+  useEffect(
+    () => localStorage.setItem(key, JSON.stringify(state)),
+    [key, state]
+  );
 
   return [state, setState];
 };
+// ПИСАТИ HOOKS ЯКІ НЕ ПЕРЕВИКОРИСТОВУЮТЬСЯ НЕДОЦІЛЬНО - ЦЕ ТРАТА ЧАСУ !!!
+// ІХ СУТЬ САМЕ В ПЕРЕВИКОРИСТАННІ

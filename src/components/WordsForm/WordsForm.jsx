@@ -1,19 +1,23 @@
-import { useReducer } from 'react';
-
-import TextField from '@mui/material/TextField';
+import React, { useReducer } from 'react';
 import { nanoid } from 'nanoid';
 
-// початковий стан інпутів
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+import css from './WordsForm.module.css';
+import messageInfo from 'components/Notify/Notify';
+import { useDispatch } from 'react-redux';
+import { addWord } from 'redux/operations';
+
 const initialState = {
-  uaWord: '',
+  ukrWord: '',
   enWord: '',
 };
 
-// оновлювач стейту
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'uaWord':
-      return { ...state, uaWord: action.payload };
+    case 'ukrWord':
+      return { ...state, ukrWord: action.payload };
     case 'enWord':
       return { ...state, enWord: action.payload };
     case 'reset':
@@ -22,90 +26,121 @@ const reducer = (state, action) => {
       return state;
   }
 };
-// головний компонент  форми
-const WordsForm = ({ addWord }) => {
+
+export const WordsForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // контрольований інпут (функція)
+  const dispatchToRedux = useDispatch();
+
   const handleChange = e => {
-    console.log(e);
-    dispatch({ type: e.target.name, payload: e.target.value });
+    const { name, value } = e.currentTarget;
+
+    dispatch({ type: name, payload: value });
   };
 
-  // сабміт форми
-  const onSubmitForm = e => {
+  const handleSubmitForm = e => {
     e.preventDefault();
+
+    if (state.enWord === '' || state.ukrWord === '') {
+      return messageInfo('Потрібно ввести слово');
+    }
+
     const word = {
       id: nanoid(5),
       isChecked: false,
       ...state,
     };
-    addWord(word);
+
+    // addWord(word);
+    dispatchToRedux(addWord(word));
     dispatch({ type: 'reset' });
   };
 
   return (
-    <form onSubmit={onSubmitForm} action="">
+    <form onSubmit={handleSubmitForm} className={css.WordsForm}>
       <TextField
+        id="ukrWord"
+        name="ukrWord"
+        label="Ukrainian"
+        variant="outlined"
+        autoComplete="off"
+        value={state.ukrWord}
         onChange={handleChange}
-        value={state.uaWord}
-        name="uaWord"
-        id="filled-basic"
-        label="UKR"
-        variant="filled"
       />
       <TextField
-        onChange={handleChange}
-        value={state.enWord}
+        id="enWord"
         name="enWord"
-        id="filled-basic"
-        label="ENG"
-        variant="filled"
+        label="English"
+        variant="outlined"
+        autoComplete="off"
+        value={state.enWord}
+        onChange={handleChange}
       />
-      <button type="submit">Add word</button>
+      <Button type="submit" variant="outlined">
+        add word
+      </Button>
     </form>
   );
 };
 
-export default WordsForm;
-
+// // =============BEFORE ======================
 // export default class WordsForm extends Component {
-// 	state = {
-// 		uaWord: '',
-// 		enWord: ''
-// 	}
+//   state = {
+//     ukrWord: '',
+//     enWord: '',
+//   };
 
-// 	handleChange = (e) => {
-// 		console.log(e)
-// 		this.setState({
-// 			[e.target.name]:e.target.value
-// 		})
-// 	}
-// 	onSubmitForm = (e) => {
-// 		e.preventDefault()
-// 		const word = {
-// 			id: nanoid(5),
-// 			isChecked: false,
-// 			...this.state,
-// 		}
-// 		this.props.addWord(word)
-// 		this.setState({
-// 			uaWord: '',
-// 			enWord: ''
-// 		})
-// 	}
+//   handleChange = e => {
+//     const { name, value } = e.currentTarget;
+//     // console.log(value);
+//     // console.log(name);
+//     this.setState({ [name]: value });
+//   };
 
-// 	render() {
-// 		return (
-// 			// <form onSubmit={this.onSubmitForm}  action="">
-// 			// 	<TextField onChange={this.handleChange}
-// 			// 		value={this.state.uaWord}
-// 			// 	name='uaWord' id="filled-basic" label="UKR" variant="filled" />
-// 			// 	<TextField onChange={this.handleChange}
-// 			// 	value={this.state.enWord}
-// 			// 	name='enWord' id="filled-basic" label="ENG" variant="filled" />
-// 			// 	<button type="submit">Add word</button>
-// 			// </form>
-// 		)
-// 	}
+//   handleSubmitForm = e => {
+//     e.preventDefault();
+
+//     if (this.state.enWord === '' || this.state.ukrWord === '') {
+//       return messageInfo('Потрібно ввести слово');
+//     }
+
+//     const word = {
+//       id: nanoid(5),
+//       isChecked: false,
+//       ...this.state,
+//     };
+
+//     this.props.addWord(word);
+//     this.setState({ ukrWord: '', enWord: '' }); // очистка форми для контрольованих input-тів
+//     // e.target.reset(); // очистка форми для НЕконтрольованих input-тів (не працює для контрольованих input-тів);
+//   };
+
+//   render() {
+//     const { ukrWord, enWord } = this.state;
+//     return (
+//       <form onSubmit={this.handleSubmitForm} className={css.WordsForm}>
+//         <TextField
+//           id="ukrWord"
+//           name="ukrWord"
+//           label="Ukrainian"
+//           variant="outlined"
+//           autoComplete="off"
+//           value={ukrWord}
+//           onChange={this.handleChange}
+//         />
+//         <TextField
+//           id="enWord"
+//           name="enWord"
+//           label="English"
+//           variant="outlined"
+//           autoComplete="off"
+//           value={enWord}
+//           onChange={this.handleChange}
+//         />
+//         <Button type="submit" variant="outlined">
+//           add word
+//         </Button>
+//       </form>
+//     );
+//   }
 // }

@@ -1,8 +1,29 @@
-import React from 'react'
+import React from 'react';
 import TextField from '@mui/material/TextField';
- const Filter = ({handleChange, value}) => {
+import css from './Filter.module.css';
+
+import { selectFilter } from 'redux/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from 'redux/filterSlice';
+
+export default function Filter() {
+  const dispatch = useDispatch();
+  const value = useSelector(selectFilter);
+
+  const handleChange = e => {
+    dispatch(setFilter(e.target.value));
+  };
+
   return (
-    <TextField onChange={handleChange} value={value} id="standard-basic" label="Standard" variant="standard" />
-  )
+    <TextField
+      id="filter"
+      name="filter"
+      label="Filter"
+      variant="outlined"
+      value={value}
+      onChange={handleChange}
+      className={css.Filter}
+      style={{ marginTop: '50px' }}
+    />
+  );
 }
-export default Filter;
