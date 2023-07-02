@@ -19,8 +19,9 @@ const QuizComponent = () => {
 
 	// useTransition and other
 
-
+	/* eslint-disable */
 	const allWordsValue = useMemo(() => wordsIsChecked.length, []);
+	/* eslint-enable */
 	// console.log(allWordsValue);
 	const onSubmitForm = (e) => {
 		e.preventDefault();
